@@ -3390,6 +3390,11 @@
     // In node.js, however, these properties must be set "manually" before instansiating a new Dexie(). For node.js, you need to require indexeddb-js or similar and then set these deps.
     //
     var idbshim = global.idbModules && global.idbModules.shimIndexedDB ? global.idbModules : {};
+	try	{
+		var localStorage =((typeof chrome !== "undefined" && chrome !== null ? chrome.storage : void 0) != null ? null : global.localStorage);
+	}
+	catch(e){}
+	
     Dexie.dependencies = {
         // Required:
         // NOTE: The "_"-prefixed versions are for prioritizing IDB-shim on IOS8 before the native IDB in case the shim was included.
@@ -3401,7 +3406,7 @@
         SyntaxError: global.SyntaxError || String,
         TypeError: global.TypeError || String,
         DOMError: global.DOMError || String,
-        localStorage: ((typeof chrome !== "undefined" && chrome !== null ? chrome.storage : void 0) != null ? null : global.localStorage)
+        localStorage: localStorage
     }; 
 
     // API Version Number: Type Number, make sure to always set a version number that can be comparable correctly. Example: 0.9, 0.91, 0.92, 1.0, 1.01, 1.1, 1.2, 1.21, etc.
